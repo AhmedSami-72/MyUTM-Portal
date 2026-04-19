@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Examination Slip - UTM Clone</title>
+    <link rel="icon" href="assets/home/myutm_200.png" type="image/png">  
+    <script>
+    if (sessionStorage.getItem("isLoggedIn") !== "true") {
+      window.location.href = "../index.html";
+    }
+    </script>
+    <link rel="stylesheet" href="../css/student-portal.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="portal-container">
+        <!-- Header -->
+        <header class="portal-header">
+            <div class="header-left">
+                <div class="hamburger-menu" id="sidebarToggle">
+                    <span class="hamburger-icon">☰</span>
+                </div>
+                <span class="portal-title">Student Portal</span>
+                <div class="session-info">
+                    <span class="calendar-icon">📅</span>
+                    Academic Session : 202520262
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="grid-icon-wrapper" id="gridIconTrigger" style="margin-right: 15px; cursor: pointer; color: #666; font-size: 1.2rem;">
+                    <i class="fa-solid fa-table-cells-large"></i>
+                </div>
+                <div class="profile-trigger" id="profileTrigger">
+                    <img src="../assets/home/images/profile.jpg" alt="Profile" class="header-profile-img" onerror="this.src='../assets/dashboard/ic_account_circle_black_24dp.png'">
+                </div>
+                <div class="profile-dropdown" id="profileDropdown">
+                    <div class="dropdown-content">
+                        <div style="text-align: center; margin-bottom: 15px;">
+                            <img src="../assets/home/images/profile.jpg" alt="Profile" style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid #f0f0f0;">
+                        </div>
+                        <div class="user-name profile-name">MOMEN AHMED MOHAMED MOHAMED ALI</div>
+                        <div class="user-email profile-email">ahmedmohamed.m@graduate.utm.my</div>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="logout-btn" id="logoutBtn" onclick="logout()"><i class="fa-solid fa-right-from-bracket" style="margin-right: 8px;"></i> Logout</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Popup Modal -->
+            <div id="statsPopupModal" class="modal" style="display: none;">
+                <div class="modal-content" style="width: 400px; padding: 25px; border-radius: 15px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+                        <h3 style="margin: 0; font-size: 1.1rem; color: #333;">Quick Stats</h3>
+                        <span id="closeStatsPopup" style="cursor: pointer; font-size: 1.5rem; color: #aaa;">&times;</span>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div style="background: #f0fdf4; padding: 15px; border-radius: 10px; text-align: center; border: 1px solid #dcfce7;">
+                            <i class="fa-solid fa-calculator" style="color: #27ae60; font-size: 1.2rem; margin-bottom: 8px;"></i>
+                            <div style="font-size: 0.7rem; color: #666; text-transform: uppercase; font-weight: 700;">Financial</div>
+                            <div style="font-weight: 700; color: #333; font-size: 0.9rem;">RM 9,420.00</div>
+                        </div>
+                        <div style="background: #f0f9ff; padding: 15px; border-radius: 10px; text-align: center; border: 1px solid #e0f2fe;">
+                            <i class="fa-solid fa-chart-line" style="color: #2980b9; font-size: 1.2rem; margin-bottom: 8px;"></i>
+                            <div style="font-size: 0.7rem; color: #666; text-transform: uppercase; font-weight: 700;">Credit</div>
+                            <div style="font-weight: 700; color: #333; font-size: 0.9rem;">49 / 135</div>
+                        </div>
+                        <div style="background: #faf5ff; padding: 15px; border-radius: 10px; text-align: center; border: 1px solid #f3e8ff;">
+                            <i class="fa-solid fa-calendar-check" style="color: #8e44ad; font-size: 1.2rem; margin-bottom: 8px;"></i>
+                            <div style="font-size: 0.7rem; color: #666; text-transform: uppercase; font-weight: 700;">Activity</div>
+                            <div style="font-weight: 700; color: #333; font-size: 0.9rem;">26</div>
+                        </div>
+                        <div style="background: #fffaf0; padding: 15px; border-radius: 10px; text-align: center; border: 1px solid #ffedd5;">
+                            <i class="fa-solid fa-award" style="color: #f39c12; font-size: 1.2rem; margin-bottom: 8px;"></i>
+                            <div style="font-size: 0.7rem; color: #666; text-transform: uppercase; font-weight: 700;">Award</div>
+                            <div style="font-weight: 700; color: #333; font-size: 0.9rem;">2</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="portal-body">
+            <!-- Sidebar -->
+            <aside class="portal-sidebar" id="sidebar">
+                <nav class="sidebar-nav">
+                    <div class="nav-item" onclick="location.href='student-portal.html'">
+                        <span class="nav-icon">📊</span>
+                        <span class="nav-text">Dashboard</span>
+                    </div>
+                    
+                    <div class="nav-group">
+                        <div class="group-label">MENU</div>
+                        
+                        <!-- Student Info -->
+                        <div class="nav-item has-submenu" data-target="student-info">
+                            <span class="nav-icon">👤</span>
+                            <span class="nav-text">Student Info</span>
+                            <span class="submenu-arrow">›</span>
+                        </div>
+                        <ul class="submenu" id="student-info">
+                            <li onclick="location.href='student-profile.html'">Personal Info</li>
+                        </ul>
+
+                        <!-- Academic Matters -->
+                        <div class="nav-item has-submenu active open" data-target="academic-matters">
+                            <span class="nav-icon">🎓</span>
+                            <span class="nav-text">Academic Matters</span>
+                            <span class="submenu-arrow">⌄</span>
+                        </div>
+                        <ul class="submenu show" id="academic-matters">
+                            <li onclick="location.href='academic.html'">Academic Background</li>
+                            <li class="has-inner-submenu open" data-target="slip-submenu">
+                                Slip <span class="submenu-arrow">⌄</span>
+                            </li>
+                            <ul class="inner-submenu" id="slip-submenu">
+                                <li onclick="location.href='curriculum-structure.html'">Curriculum Structure</li>
+                                <li onclick="location.href='examination.html'">Examination Slip</li>
+                                <li>
+                                    <a href="../assets/GridList/SEM-FINAL-READY.pdf" target="_blank">
+                                        Grade List
+                                    </a>
+                                </li>
+                            </ul>
+                        </ul>
+
+                        <!-- Timetable -->
+                        <div class="nav-item" onclick="location.href='timetable.html'">
+                            <span class="nav-icon">📅</span>
+                            <span class="nav-text">Timetable</span>
+                        </div>
+                    </div>
+                </nav>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="portal-main">
+                <!-- User Info Card (Faisal Style) -->
+                <div class="user-info-card">
+                    <div class="user-card-left">
+                        <img src="../assets/home/images/profile.jpg" alt="Profile" class="main-profile-img" onerror="this.src='../assets/dashboard/ic_account_circle_black_24dp.png'">
+                        <div class="user-basics">
+                            <h2>MOMEN AHMED MOHAMED MOHAMED ALI</h2>
+                            <p class="degree-text">Bachelor Of Engineering (Electrical-Mechatronics) With Honours</p>
+                            <span class="major-badge">Electrical and Mechatronics Engineering</span>
+                        </div>
+                    </div>
+                    <div class="user-card-right">
+                        <div class="info-row">
+                            <span class="info-icon"><i class="fa-solid fa-id-card"></i></span>
+                            <span class="info-text">A24KE4027</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-icon"><i class="fa-solid fa-check-circle"></i></span>
+                            <span class="info-text">A / AKTIF</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-icon"><i class="fa-solid fa-calendar"></i></span>
+                            <span class="info-text">4 / 8</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-icon"><i class="fa-solid fa-calendar-check"></i></span>
+                            <span class="info-text">202520262</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-icon"><i class="fa-solid fa-building"></i></span>
+                            <span class="info-text">2 / SKEMH</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-icon"><i class="fa-solid fa-graduation-cap"></i></span>
+                            <span class="info-text">Taught Course</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stat Cards (Faisal Style) -->
+                <div class="stat-cards">
+                    <div class="stat-card purple">
+                        <div class="stat-info">
+                            <span class="stat-label">CGPA</span>
+                            <span class="stat-value">3.35</span>
+                            <span class="stat-sub">(202520261)</span>
+                        </div>
+                        <div class="stat-icon-wrapper">
+                            <span class="stat-icon-font">📈</span>
+                        </div>
+                    </div>
+                    <div class="stat-card green">
+                        <div class="stat-info">
+                            <span class="stat-label">ACTIVITY</span>
+                            <span class="stat-value">26</span>
+                        </div>
+                        <div class="stat-icon-wrapper">
+                            <span class="stat-icon-font">🏃</span>
+                        </div>
+                    </div>
+                    <div class="stat-card blue">
+                        <div class="stat-info">
+                            <span class="stat-label">AWARD</span>
+                            <span class="stat-value">2</span>
+                        </div>
+                        <div class="stat-icon-wrapper">
+                            <span class="stat-icon-font">🏆</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CGPA Summary Section (Faisal Style) -->
+                <div class="cgpa-summary">
+                    <div class="section-header">
+                        <h3>CGPA Summary</h3>
+                    </div>
+                    <div id="chartContainer" style="width: 100%; height: 400px;"></div>
+                </div>
+
+                <footer class="footer">
+                    <span>Copyright © UTMDigital 2025</span>
+                    <span>Privacy Policy · Terms & Conditions</span>
+                </footer>
+            </main>
+        </div>
+    </div>
+
+    <!-- EXAMINATION MODAL -->
+    <div id="examModal" class="modal-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); justify-content:center; align-items:center; z-index:9999;"> 
+      <div class="modal-box" style="background:#fff; padding:30px; border-radius:10px; width:400px; text-align:center;"> 
+        <h3>Examination Result</h3> 
+    
+        <label style="display:block; margin:10px 0;">SEMESTER SESSION</label> 
+    
+        <select id="examSemester" style="width:100%; padding:10px; margin-bottom:20px;"> 
+          <option value="">--Please Select--</option> 
+          <option value="202520261">202520261</option> 
+          <option value="202420252">202420252</option> 
+          <option value="202420251">202420251</option> 
+        </select> 
+    
+        <div class="actions" style="display:flex; justify-content:center; gap:10px;"> 
+          <button id="examViewBtn" style="display:none; background:green; color:#fff; border:none; padding:10px 20px; border-radius:5px; cursor:pointer;">View</button> 
+          <button id="examCancelBtn" style="background:none; border:1px solid red; color:red; padding:10px 20px; border-radius:5px; cursor:pointer;">Cancel</button> 
+        </div> 
+    
+      </div> 
+    </div>
+
+    <!-- Highcharts Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/highcharts@10.3.3/highcharts.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/highcharts@10.3.3/modules/exporting.js"></script>
+
+    <script src="../js/main.js"></script>
+    <script src="../js/student-portal.js"></script>
+    <script src="../js/dashboard.js"></script>
+</body> 
+</html>
