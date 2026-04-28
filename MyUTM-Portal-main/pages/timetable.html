@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TimeTable - UTM Clone</title>
+    <link rel="icon" href="../assets/home/myutm_200.png" type="image/png">  
+    <script>
+    if (sessionStorage.getItem("isLoggedIn") !== "true") {
+      window.location.href = "../index.html";
+    }
+    </script>
+    <link rel="stylesheet" href="../css/student-portal.css">
+    <link rel="stylesheet" href="../css/timetable.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="portal-container">
+        <!-- Header -->
+        <header class="portal-header">
+            <div class="header-left">
+                <div class="hamburger-menu" id="sidebarToggle">
+                    <span class="hamburger-icon">☰</span>
+                </div>
+                <span class="portal-title">Student Portal</span>
+                <div class="session-info">
+                    <span class="calendar-icon">📅</span>
+                    Academic Session : 202520262
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="grid-icon-wrapper" id="gridIconTrigger" style="margin-right: 15px; cursor: pointer; color: #666; font-size: 1.2rem;">
+                    <i class="fa-solid fa-table-cells-large"></i>
+                </div>
+                <div class="profile-trigger" id="profileTrigger">
+                    <img src="../assets/home/images/profile.jpg" alt="Profile" class="header-profile-img" onerror="this.src='../assets/dashboard/ic_account_circle_black_24dp.png'">
+                </div>
+                <!-- Profile Dropdown -->
+                <div class="profile-dropdown" id="profileDropdown">
+                    <div class="dropdown-content">
+                        <div style="text-align: center; margin-bottom: 15px;">
+                            <img src="../assets/home/images/profile.jpg" alt="Profile" style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid #f0f0f0;">
+                        </div>
+                        <div class="user-name profile-name">MOMEN AHMED MOHAMED MOHAMED ALI</div>
+                        <div class="user-email profile-email">ahmedmohamed.m@graduate.utm.my</div>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="logout-btn" id="logoutBtn" onclick="logout()">
+                            <i class="fa-solid fa-right-from-bracket" style="margin-right: 8px;"></i> Logout
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="portal-body">
+            <!-- Sidebar -->
+            <aside class="portal-sidebar" id="sidebar">
+                <nav class="sidebar-nav">
+                    <div class="nav-item" onclick="location.href='student-portal.html'">
+                        <span class="nav-icon">📊</span>
+                        <span class="nav-text">Dashboard</span>
+                    </div>
+                    
+                    <div class="nav-group">
+                        <div class="group-label">MENU</div>
+                        
+                        <!-- Student Info -->
+                        <div class="nav-item has-submenu" data-target="student-info">
+                            <span class="nav-icon">👤</span>
+                            <span class="nav-text">Student Info</span>
+                            <span class="submenu-arrow">›</span>
+                        </div>
+                        <ul class="submenu" id="student-info">
+                            <li onclick="location.href='student-profile.html'">Personal Info</li>
+                        </ul>
+
+                        <!-- Academic Matters -->
+                        <div class="nav-item has-submenu" data-target="academic-matters">
+                            <span class="nav-icon">🎓</span>
+                            <span class="nav-text">Academic Matters</span>
+                            <span class="submenu-arrow">›</span>
+                        </div>
+                        <ul class="submenu" id="academic-matters">
+                            <li onclick="location.href='academic.html'">Academic Background</li>
+                            <li class="has-inner-submenu" data-target="slip-submenu">
+                                Slip <span class="submenu-arrow">›</span>
+                            </li>
+                            <ul class="inner-submenu" id="slip-submenu">
+                                <li onclick="location.href='curriculum-structure.html'">Curriculum Structure</li>
+                                <li onclick="location.href='examination.html'">Examination Slip</li>
+                                <li>
+                                    <a href="../assets/GridList/SEM-FINAL-READY.pdf" target="_blank">
+                                        Grade List
+                                    </a>
+                                </li>
+                            </ul>
+                        </ul>
+
+                        <!-- Timetable -->
+                        <div class="nav-item active" onclick="location.href='timetable.html'">
+                            <span class="nav-icon">📅</span>
+                            <span class="nav-text">Timetable</span>
+                        </div>
+                    </div>
+                </nav>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="portal-main">
+                <div class="timetable-header">
+                    <h2>TimeTable</h2>
+                    <p>This is your official weekly timetable showing all scheduled lectures.</p>
+                </div>
+
+                <div class="export-container">
+                    <button class="export-btn" id="exportPDF">
+                        <i class="fa-solid fa-file-pdf"></i> Export as PDF
+                    </button>
+                </div>
+
+                <div class="timetable-container">
+                    <div class="timetable-grid-wrapper">
+                        <table class="timetable-grid">
+                            <thead>
+                                <tr>
+                                    <th>08:00–09:50</th>
+                                    <th>10:00–11:50</th>
+                                    <th>12:00–01:50</th>
+                                    <th>01:50–02:50</th>
+                                    <th>03:00–04:50</th>
+                                    <th>05:00–05:50</th>
+                                    <th class="day-column">Days</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="cell-subject">Electromagnetic Field Theory</td>
+                                    <td class="cell-subject">—</td>
+                                    <td class="cell-break">Break</td>
+                                    <td class="cell-subject">Philosophy (1 hr)</td>
+                                    <td class="cell-subject">—</td>
+                                    <td class="cell-subject">Communication (1 hr)</td>
+                                    <td class="day-column">Monday</td>
+                                </tr>
+                                <tr>
+                                    <td class="cell-subject">—</td>
+                                    <td class="cell-subject">System Modelling</td>
+                                    <td class="cell-break">Break</td>
+                                    <td class="cell-subject">—</td>
+                                    <td class="cell-subject">Electrical Machines</td>
+                                    <td class="cell-subject">—</td>
+                                    <td class="day-column">Tuesday</td>
+                                </tr>
+                                <tr>
+                                    <td class="cell-subject">Electrical Machines</td>
+                                    <td class="cell-subject">Electromagnetic Field Theory</td>
+                                    <td class="cell-break">Break</td>
+                                    <td class="cell-subject">Communication (1 hr)</td>
+                                    <td class="cell-subject">System Modelling</td>
+                                    <td class="cell-subject">Numerical Methods</td>
+                                    <td class="day-column">Wednesday</td>
+                                </tr>
+                                <tr>
+                                    <td class="cell-subject">—</td>
+                                    <td class="cell-subject">Numerical Methods</td>
+                                    <td class="cell-break">Break</td>
+                                    <td class="cell-subject">—</td>
+                                    <td class="cell-subject">Electromagnetic Field Theory</td>
+                                    <td class="cell-subject">—</td>
+                                    <td class="day-column">Thursday</td>
+                                </tr>
+                                <tr>
+                                    <td class="cell-subject">System Modelling</td>
+                                    <td class="cell-subject">—</td>
+                                    <td class="cell-break">Break</td>
+                                    <td class="cell-subject">Philosophy (1 hr)</td>
+                                    <td class="cell-subject">—</td>
+                                    <td class="cell-subject">—</td>
+                                    <td class="day-column">Friday</td>
+                                </tr>
+                                <tr>
+                                    <td class="cell-holiday" colspan="6">Holiday</td>
+                                    <td class="day-column">Saturday</td>
+                                </tr>
+                                <tr>
+                                    <td class="cell-holiday" colspan="6">Holiday</td>
+                                    <td class="day-column">Sunday</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <footer class="footer">
+                    <span>Copyright © UTMDigital 2025</span>
+                    <span>Privacy Policy · Terms & Conditions</span>
+                </footer>
+            </main>
+        </div>
+    </div>
+
+    <script src="../js/main.js"></script>
+    <script src="../js/student-portal.js"></script>
+    <script>
+        document.getElementById('exportPDF').addEventListener('click', function() {
+            window.print();
+        });
+    </script>
+</body> 
+</html>

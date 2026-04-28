@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academic Matters - UTM Clone</title>
+    <link rel="icon" href="assets/home/myutm_200.png" type="image/png">  
+    <script>
+    if (sessionStorage.getItem("isLoggedIn") !== "true") {
+      window.location.href = "../index.html";
+    }
+    </script>
+    <link rel="stylesheet" href="../css/student-portal.css">
+    <link rel="stylesheet" href="../css/academic.css">
+</head>
+<body>
+    <div class="portal-container">
+        <!-- Header -->
+        <header class="portal-header">
+            <div class="header-left">
+                <div class="hamburger-menu" id="sidebarToggle">
+                    <span class="hamburger-icon">☰</span>
+                </div>
+                <span class="portal-title">Student Portal</span>
+                <div class="session-info">
+                    <span class="calendar-icon">📅</span>
+                    Academic Session : 202520262
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="grid-icon-wrapper" id="gridIconTrigger" style="margin-right: 15px; cursor: pointer; color: #666; font-size: 1.2rem;">
+                    <i class="fa-solid fa-table-cells-large"></i>
+                </div>
+                <div class="profile-trigger" id="profileTrigger">
+                    <img src="../assets/home/images/profile.jpg" alt="Profile" class="header-profile-img" onerror="this.src='../assets/dashboard/ic_account_circle_black_24dp.png'">
+                </div>
+                <div class="profile-dropdown" id="profileDropdown">
+                    <div class="dropdown-content">
+                        <div style="text-align: center; margin-bottom: 15px;">
+                            <img src="../assets/home/images/profile.jpg" alt="Profile" style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid #f0f0f0;">
+                        </div>
+                        <div class="user-name profile-name">MOMEN AHMED MOHAMED MOHAMED ALI</div>
+                        <div class="user-email profile-email">ahmedmohamed.m@graduate.utm.my</div>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="logout-btn" id="logoutBtn" onclick="logout()"><i class="fa-solid fa-right-from-bracket" style="margin-right: 8px;"></i> Logout</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Popup Modal -->
+            <div id="statsPopupModal" class="modal" style="display: none;">
+                <div class="modal-content" style="width: 400px; padding: 25px; border-radius: 15px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+                        <h3 style="margin: 0; font-size: 1.1rem; color: #333;">Quick Stats</h3>
+                        <span id="closeStatsPopup" style="cursor: pointer; font-size: 1.5rem; color: #aaa;">&times;</span>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div style="background: #f0fdf4; padding: 15px; border-radius: 10px; text-align: center; border: 1px solid #dcfce7;">
+                            <i class="fa-solid fa-calculator" style="color: #27ae60; font-size: 1.2rem; margin-bottom: 8px;"></i>
+                            <div style="font-size: 0.7rem; color: #666; text-transform: uppercase; font-weight: 700;">Financial</div>
+                            <div style="font-weight: 700; color: #333; font-size: 0.9rem;">RM 0.00</div>
+                        </div>
+                        <div style="background: #f0f9ff; padding: 15px; border-radius: 10px; text-align: center; border: 1px solid #e0f2fe;">
+                            <i class="fa-solid fa-chart-line" style="color: #2980b9; font-size: 1.2rem; margin-bottom: 8px;"></i>
+                            <div style="font-size: 0.7rem; color: #666; text-transform: uppercase; font-weight: 700;">Credit</div>
+                            <div style="font-weight: 700; color: #333; font-size: 0.9rem;">49 / 135</div>
+                        </div>
+                        <div style="background: #faf5ff; padding: 15px; border-radius: 10px; text-align: center; border: 1px solid #f3e8ff;">
+                            <i class="fa-solid fa-calendar-check" style="color: #8e44ad; font-size: 1.2rem; margin-bottom: 8px;"></i>
+                            <div style="font-size: 0.7rem; color: #666; text-transform: uppercase; font-weight: 700;">Activity</div>
+                            <div style="font-weight: 700; color: #333; font-size: 0.9rem;">26</div>
+                        </div>
+                        <div style="background: #fffaf0; padding: 15px; border-radius: 10px; text-align: center; border: 1px solid #ffedd5;">
+                            <i class="fa-solid fa-award" style="color: #f39c12; font-size: 1.2rem; margin-bottom: 8px;"></i>
+                            <div style="font-size: 0.7rem; color: #666; text-transform: uppercase; font-weight: 700;">Award</div>
+                            <div style="font-weight: 700; color: #333; font-size: 0.9rem;">2</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="portal-body">
+            <!-- Sidebar -->
+            <aside class="portal-sidebar" id="sidebar">
+                <nav class="sidebar-nav">
+                    <div class="nav-item" onclick="location.href='student-portal.html'">
+                        <span class="nav-icon">📊</span>
+                        <span class="nav-text">Dashboard</span>
+                    </div>
+                    
+                    <div class="nav-group">
+                        <div class="group-label">MENU</div>
+                        
+                        <!-- Student Info -->
+                        <div class="nav-item has-submenu" data-target="student-info">
+                            <span class="nav-icon">👤</span>
+                            <span class="nav-text">Student Info</span>
+                            <span class="submenu-arrow">›</span>
+                        </div>
+                        <ul class="submenu" id="student-info">
+                            <li onclick="location.href='student-profile.html'">Personal Info</li>
+                        </ul>
+
+                        <!-- Academic Matters -->
+                        <div class="nav-item has-submenu" data-target="academic-matters">
+                            <span class="nav-icon">🎓</span>
+                            <span class="nav-text">Academic Matters</span>
+                            <span class="submenu-arrow">›</span>
+                        </div>
+                        <ul class="submenu" id="academic-matters">
+                            <li onclick="location.href='academic.html'">Academic Background</li>
+                            <li class="has-inner-submenu" data-target="slip-submenu">
+                                Slip <span class="submenu-arrow">›</span>
+                            </li>
+                            <ul class="inner-submenu" id="slip-submenu">
+                                <li onclick="location.href='curriculum-structure.html'">Curriculum Structure</li>
+                                <li onclick="location.href='examination.html'">Examination Slip</li>
+                                <li>
+                                    <a href="../assets/GridList/SEM-FINAL-READY.pdf" target="_blank">
+                                        Grade List
+                                    </a>
+                                </li>
+                            </ul>
+                        </ul>
+
+                        <!-- Timetable -->
+                        <div class="nav-item" onclick="location.href='timetable.html'">
+                            <span class="nav-icon">📅</span>
+                            <span class="nav-text">Timetable</span>
+                        </div>
+                    </div>
+                </nav>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="portal-main">
+                <div class="page-header-title">
+                    <span class="page-icon">🎓</span>
+                    <h2>Academic Matters</h2>
+                </div>
+
+                <!-- Top Stepper -->
+                <div class="stepper-container">
+                    <div class="step active" data-tab="semester">
+                        <div class="step-icon">1</div>
+                        <span class="step-title">Semester</span>
+                    </div>
+                    <div class="step" data-tab="advisor">
+                        <div class="step-icon">2</div>
+                        <span class="step-title">Advisor / Supervision</span>
+                    </div>
+                    <div class="step" data-tab="qualification">
+                        <div class="step-icon">3</div>
+                        <span class="step-title">Qualification</span>
+                    </div>
+                    <div class="step" data-tab="skills">
+                        <div class="step-icon">4</div>
+                        <span class="step-title">Professional Skills Certificate</span>
+                    </div>
+                </div>
+
+                <!-- Tab Content Sections -->
+                <div class="academic-content-card">
+                    <!-- Semester Section -->
+                    <section id="semester-section" class="tab-section active">
+                        <div class="section-title">Semester</div>
+                        
+                        <div class="info-grid">
+                            <div class="info-group">
+                                <label>Current Semester</label>
+                                <input type="text" value="202520262" disabled>
+                            </div>
+                            <div class="info-group">
+                                <label>Year / Programme</label>
+                                <input type="text" value="1 / SKEMH" disabled>
+                            </div>
+                            <div class="info-group">
+                                <label>Active Code</label>
+                                <input type="text" value="A - Active" disabled>
+                            </div>
+                        </div>
+
+                        <div class="semester-explorer">
+                            <h4 class="table-title">Academic Background</h4>
+                            
+                            <!-- Years Accordion -->
+                            <div class="years-accordion">
+                                <!-- Year 1 -->
+                                <div class="year-block" id="year-1-block">
+                                    <div class="year-header" onclick="toggleYear(1)">
+                                        <div class="year-info-left">
+                                            <span class="year-title">1st Year</span>
+                                            <span class="status-badge completed">Completed</span>
+                                        </div>
+                                        <i class="fa-solid fa-chevron-down"></i>
+                                    </div>
+                                    <div class="year-content">
+                                        <!-- Semester 1 -->
+                                        <div class="sem-section">
+                                            <h5 class="sem-title">Semester 1 <span class="completed-text">(Completed)</span></h5>
+                                            <table class="excel-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Code</th>
+                                                        <th>Subject Name</th>
+                                                        <th>Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr><td>SKEE 1012</td><td>Introduction to Electrical Engineering</td><td class="completed">Completed</td></tr>
+                                                    <tr><td>SKEE 1013</td><td>Electrical Circuit Analysis</td><td class="completed">Completed</td></tr>
+                                                    <tr><td>SKEE 1033</td><td>Scientific Programming</td><td class="completed">Completed</td></tr>
+                                                    <tr><td>SSCE 1693</td><td>Engineering Mathematics I</td><td class="completed">Completed</td></tr>
+                                                    <tr><td>SKEE 1233</td><td>Digital Electronic Systems</td><td class="completed">Completed</td></tr>
+                                                    <tr><td>ULRS 1032</td><td>Integrity and Anti-Corruption</td><td class="completed">Completed</td></tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <!-- Semester 2 -->
+                                        <div class="sem-section">
+                                            <h5 class="sem-title">Semester 2 <span class="completed-text">(Completed)</span></h5>
+                                            <table class="excel-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Code</th>
+                                                        <th>Subject Name</th>
+                                                        <th>Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr><td>SEMU 2113</td><td>Engineering Science</td><td class="completed">Completed</td></tr>
+                                                    <tr><td>SKEE 1073</td><td>Electronic Devices and Circuits</td><td class="completed">Completed</td></tr>
+                                                    <tr><td>SKEE 1103</td><td>C Programming for Engineers</td><td class="completed">Completed</td></tr>
+                                                    <tr><td>SKEE 2133</td><td>Electronic Instrumentation</td><td class="completed">Completed</td></tr>
+                                                    <tr><td>SSCE 1793</td><td>Differential Equations</td><td class="completed">Completed</td></tr>
+                                                    <tr><td>UHLM 1012</td><td>Malay Language Communication</td><td class="completed">Completed</td></tr>
+                                                    <tr><td>ULRS 1182</td><td>Ethics and Civilization</td><td class="completed">Completed</td></tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Year 2 -->
+                                <div class="year-block" id="year-2-block">
+                                    <div class="year-header" onclick="toggleYear(2)">
+                                        <div class="year-info-left">
+                                            <span class="year-title">2nd Year</span>
+                                            <span class="status-badge in-progress">In Progress</span>
+                                        </div>
+                                        <i class="fa-solid fa-chevron-right"></i>
+                                    </div>
+                                    <div class="year-content hidden">
+                                        <!-- Semester 1 -->
+                                        <div class="sem-section">
+                                            <h5 class="sem-title">Semester 1 <span class="completed-text">(Completed)</span></h5>
+                                            <table class="excel-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Code</th>
+                                                        <th>Subject Name</th>
+                                                        <th>Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr><td>SKEE 2073</td><td>Signals & Systems</td><td class="completed">Completed</td></tr>
+                                                    <tr><td>SKEE 2433</td><td>Power Systems</td><td class="completed">Completed</td></tr>
+                                                    <tr><td>SKEE 2752</td><td>Electronic Design Lab</td><td class="completed">Completed</td></tr>
+                                                    <tr><td>SKEE 3223</td><td>Microprocessor</td><td class="completed">Completed</td></tr>
+                                                    <tr><td>UHLM 1012</td><td>Malay Communication</td><td class="completed">Completed</td></tr>
+                                                    <tr><td>SKEE 3723</td><td>Engineering Math II</td><td class="completed">Completed</td></tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <!-- Semester 2 -->
+                                        <div class="sem-section">
+                                            <h5 class="sem-title">Semester 2 <span class="pending-text">(Pending)</span></h5>
+                                            <table class="excel-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Code</th>
+                                                        <th>Subject Name</th>
+                                                        <th>Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr><td>SKEE 2523</td><td>Electromagnetic Field Theory</td><td class="pending">Pending</td></tr>
+                                                    <tr><td>SKEE 3133</td><td>System Modelling and Analysis</td><td class="pending">Pending</td></tr>
+                                                    <tr><td>SKEE 3633</td><td>Electrical Machines</td><td class="pending">Pending</td></tr>
+                                                    <tr><td>SSCE 2393</td><td>Numerical Methods</td><td class="pending">Pending</td></tr>
+                                                    <tr><td>UHLB 2122</td><td>Professional Communication Skills 1</td><td class="pending">Pending</td></tr>
+                                                    <tr><td>UHMS 1182</td><td>Philosophy and Current Issues</td><td class="pending">Pending</td></tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Year 3 -->
+                                <div class="year-block" id="year-3-block">
+                                    <div class="year-header" onclick="toggleYear(3)">
+                                        <div class="year-info-left">
+                                            <span class="year-title">3rd Year</span>
+                                            <span class="status-badge pending">Pending</span>
+                                        </div>
+                                        <i class="fa-solid fa-chevron-right"></i>
+                                    </div>
+                                    <div class="year-content hidden">
+                                        <div class="no-data-msg">No subjects available for this year.</div>
+                                    </div>
+                                </div>
+
+                                <!-- Year 4 -->
+                                <div class="year-block" id="year-4-block">
+                                    <div class="year-header" onclick="toggleYear(4)">
+                                        <div class="year-info-left">
+                                            <span class="year-title">4th Year</span>
+                                            <span class="status-badge pending">Pending</span>
+                                        </div>
+                                        <i class="fa-solid fa-chevron-right"></i>
+                                    </div>
+                                    <div class="year-content hidden">
+                                        <div class="no-data-msg">No subjects available for this year.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Advisor Section -->
+                    <section id="advisor-section" class="tab-section">
+                        <div class="section-title">Academic Advisor</div>
+                        
+                        <div class="table-container">
+                            <div class="table-controls">
+                                <div class="entries-control">
+                                    Show 
+                                    <select id="advisor-entries">
+                                        <option value="10">10</option>
+                                        <option value="25">25</option>
+                                        <option value="50">50</option>
+                                    </select> 
+                                    entries
+                                </div>
+                                <div class="search-control">
+                                    Search: <input type="text" id="advisor-search">
+                                </div>
+                            </div>
+
+                            <table class="academic-table" id="advisor-table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Session</th>
+                                        <th>Programme</th>
+                                        <th>Sem No</th>
+                                        <th>Staff No</th>
+                                        <th>Name</th>
+                                        <th>Faculty</th>
+                                        <th>Telephone No. / email</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Dynamic Rows -->
+                                </tbody>
+                            </table>
+
+                            <div class="table-footer">
+                                <div class="table-info" id="advisor-table-info">Showing 1 to 4 of 4 entries</div>
+                                <div class="pagination" id="advisor-pagination">
+                                    <!-- Dynamic Pagination -->
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Qualification Section -->
+                    <section id="qualification-section" class="tab-section">
+                        <div class="section-title">Qualification</div>
+                        
+                        <!-- Sub Tabs -->
+                        <div class="sub-tab-container">
+                            <div class="sub-tab active" data-sub="spm">SPM</div>
+                            <div class="sub-tab" data-sub="stpm">STPM</div>
+                            <div class="sub-tab" data-sub="stam">STAM</div>
+                            <div class="sub-tab" data-sub="matrikulasi">MATRIKULASI</div>
+                            <div class="sub-tab" data-sub="muet">MUET</div>
+                            <div class="sub-tab" data-sub="foundation">Foundation/IELTS</div>
+                            <div class="sub-tab" data-sub="alevel">A-Level/IB/AUSMAT</div>
+                        </div>
+
+                        <!-- Sub-tab Content: SPM (Default) -->
+                        <div class="sub-tab-content active" id="spm-content">
+                            <div class="qualification-form">
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label>Angka Giliran</label>
+                                        <input type="text" value="AG12345678" disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Sijil</label>
+                                        <input type="text" value="SPM" disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Aliran</label>
+                                        <input type="text" value="Science" disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Tahun</label>
+                                        <input type="text" value="2022" disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Jenis Sekolah</label>
+                                        <input type="text" value="Secondary School" disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Nama Sekolah</label>
+                                        <input type="text" value="Future School" disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Agregat</label>
+                                        <input type="text" value="8A" disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Pangkat</label>
+                                        <input type="text" value="Excellent" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Placeholder for other sub-tabs -->
+                        <div class="sub-tab-content" id="other-qualification-content">
+                            <div class="qualification-form">
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label>Institution Name</label>
+                                        <input type="text" value="International College" disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Level</label>
+                                        <input type="text" value="Pre-University" disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Year</label>
+                                        <input type="text" value="2023" disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Result</label>
+                                        <input type="text" value="4.00 CGPA" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Professional Skills Section -->
+                    <section id="skills-section" class="tab-section">
+                        <div class="section-title">Professional Skills Certificate</div>
+                        <div class="table-container">
+                            <table class="excel-table">
+                                <thead>
+                                    <tr>
+                                        <th>Semester</th>
+                                        <th>Code</th>
+                                        <th>Subject Name</th>
+                                        <th>Status</th>
+                                        <th>Status Lulus</th>
+                                        <th>Section</th>
+                                        <th>Category</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>SKILL101</td>
+                                        <td>Communication Skills</td>
+                                        <td class="completed">Completed</td>
+                                        <td>PASS</td>
+                                        <td>1</td>
+                                        <td>Soft Skills</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+                </div>
+
+                <footer class="footer">
+                    <span>Copyright © UTMDigital 2025</span>
+                    <span>Privacy Policy · Terms & Conditions</span>
+                </footer>
+            </main>
+        </div>
+    </div>
+
+    <!-- Processing Modal -->
+    <div id="processing-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h3>Processing...</h3>
+            <div class="spinner"></div>
+        </div>
+    </div>
+
+    <script src="../js/main.js"></script>
+    <script src="../js/academic.js"></script>
+</body>
+</html>

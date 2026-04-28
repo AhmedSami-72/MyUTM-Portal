@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UTM Portal - Dashboard</title>
+    <link rel="stylesheet" href="css/home.css">
+    <link rel="icon" href="assets/home/myutm_200.png" type="image/png">  
+    <!-- Font Awesome for any missing icons if needed, but will prioritize SVGs provided -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+    if (sessionStorage.getItem("isLoggedIn") !== "true") {
+      window.location.href = "index.html";
+    }
+    </script>
+</head>
+<body>
+    <div class="dashboard-wrapper">
+        <!-- 1. TOP HEADER -->
+        <header class="main-header" id="mainHeader">
+            <div class="header-left">
+                <img src="assets/home/myutm_logo_white.png" alt="UTM Logo" class="header-logo" id="headerLogo">
+            </div>
+            <div class="header-center">
+                <div class="search-box">
+                    <input type="text" placeholder="Find systems or modules...">
+                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="grid-icon" id="gridIcon">
+                    <span></span><span></span>
+                    <span></span><span></span>
+                </div>
+                <!-- Stats Popup -->
+                <div class="stats-popup" id="statsPopup">
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <i class="fa-solid fa-calculator"></i>
+                            <span class="stat-value">RM 0.00</span>
+                            <span class="stat-label">Financial Status</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fa-solid fa-wallet"></i>
+                            <span class="stat-value">RM 0.00</span>
+                            <span class="stat-label">Library Fine</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                            <span class="stat-value">202520262</span>
+                            <span class="stat-label">Semester 4/8</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fa-solid fa-chart-line"></i>
+                            <span class="stat-value">49/135</span>
+                            <span class="stat-label">Credit Counted</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fa-solid fa-calendar-check"></i>
+                            <span class="stat-value">26</span>
+                            <span class="stat-label">Activity</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fa-solid fa-award"></i>
+                            <span class="stat-value">2</span>
+                            <span class="stat-label">Award</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="profile-container">
+                    <img src="assets/home/images/profile.jpg" alt="User Profile" class="profile-img-circle" id="profileTrigger">
+                    <!-- Profile Dropdown -->
+                    <div class="profile-dropdown" id="profileDropdown">
+                        <div class="dropdown-header">
+                            <img src="assets/home/images/profile.jpg" alt="User">
+                            <div class="user-info">
+                                <h4>MOMEN AHMED MOHAMED MOHAMED ALI</h4>
+                                <p>ahmedmohamed.m@graduate.utm.my</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="dropdown-body">
+                            <button onclick="location.href='pages/student-profile.html'"><i class="fa-solid fa-user"></i> Profile</button>
+                            <button onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- 2. HERO SECTION -->
+        <section class="hero-section">
+            <div class="hero-overlay"></div>
+            <!-- Quick Access row (moved here to align under search) -->
+            <div class="quick-access-container">
+                <div class="quick-access-row">
+                    <div class="access-card" onclick="location.href='pages/student-portal.html'">
+                        <div class="card-icon"><img src="assets/home/icons/academic.svg" alt=""></div>
+                        <span class="card-text">Student Portal</span>
+                    </div>
+                    <div class="access-card">
+                        <div class="card-icon"><img src="assets/home/icons/academic.svg" alt=""></div>
+                        <span class="card-text">UTMACAD</span>
+                    </div>
+                    <div class="access-card">
+                        <div class="card-icon"><img src="assets/home/icons/academic.svg" alt=""></div>
+                        <span class="card-text">E-Learning</span>
+                    </div>
+                    <div class="access-card">
+                        <div class="card-icon"><img src="assets/home/icons/academic.svg" alt=""></div>
+                        <span class="card-text">Course Registration</span>
+                    </div>
+                    <div class="access-card">
+                        <div class="card-icon"><img src="assets/home/icons/activity.svg" alt=""></div>
+                        <span class="card-text">Activity</span>
+                    </div>
+                    <div class="access-card">
+                        <div class="card-icon"><img src="assets/home/icons/academic.svg" alt=""></div>
+                        <span class="card-text">e-Pelekat</span>
+                    </div>
+                    <div class="access-card">
+                        <div class="card-icon"><img src="assets/home/icons/achievement.svg" alt=""></div>
+                        <span class="card-text">UTMFundraising</span>
+                    </div>
+                    <div class="access-card">
+                        <div class="card-icon"><img src="assets/home/icons/academic.svg" alt=""></div>
+                        <span class="card-text">ICT Services</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. MAIN GRID LAYOUT -->
+        <main class="main-content">
+            <div class="grid-container">
+                <!-- LEFT COLUMN -->
+                <div class="column-left">
+                    <div class="card systems-apps">
+                        <div class="card-header">
+                            <h3>Systems & Apps</h3>
+                            <span class="subtitle">List by category</span>
+                        </div>
+                        <div class="menu-list">
+                            <!-- Academic -->
+                            <div class="menu-item active">
+                                <div class="menu-title">
+                                    <div class="title-left">
+                                        <img src="assets/home/icons/academic.svg" class="menu-icon" alt="">
+                                        <span>Academic</span>
+                                    </div>
+                                    <i class="fa-solid fa-chevron-down"></i>
+                                </div>
+                                <ul class="submenu show">
+                                    <li>Course Registration</li>
+                                    <li>Course Registration New</li>
+                                    <li>E-Learning</li>
+                                    <li onclick="location.href='pages/student-portal.html'">Student Portal</li>
+                                    <li>Academic Award</li>
+                                </ul>
+                            </div>
+
+                            <!-- Digital Experience -->
+                            <div class="menu-item">
+                                <div class="menu-title">
+                                    <div class="title-left">
+                                        <img src="assets/home/icons/digital_exp.svg" class="menu-icon" alt="">
+                                        <span>Digital Experience</span>
+                                    </div>
+                                    <i class="fa-solid fa-chevron-right"></i>
+                                </div>
+                                <ul class="submenu">
+                                    <li>VRMS v2</li>
+                                    <li>ICT Services</li>
+                                    <li>Software Centre</li>
+                                    <li>Ez Proxy Library</li>
+                                    <li>UTM Blossom</li>
+                                    <li>Staff Directory</li>
+                                    <li>Faculty & School</li>
+                                    <li style="color: #007bff;">Achievements</li>
+                                    <li>SPS</li>
+                                    <li>Bursary</li>
+                                    <li>E-Candidates</li>
+                                    <li>PayHub</li>
+                                    <li>UTMFundraising</li>
+                                </ul>
+                            </div>
+
+                            <!-- Campus Life -->
+                            <div class="menu-item">
+                                <div class="menu-title">
+                                    <div class="title-left">
+                                        <img src="assets/home/icons/activity.svg" class="menu-icon" alt="">
+                                        <span>Campus Life</span>
+                                    </div>
+                                    <i class="fa-solid fa-chevron-right"></i>
+                                </div>
+                                <ul class="submenu">
+                                    <li>Activity</li>
+                                    <li>Community Trans</li>
+                                    <li>UTMi Programs</li>
+                                    <li>JoC</li>
+                                    <li>Policy and Legislative</li>
+                                    <li>Admission</li>
+                                    <li>Bantuan Zakat</li>
+                                    <li>Scholarship</li>
+                                    <li>International Apps</li>
+                                    <li>Digital Care</li>
+                                    <li>PsyCare</li>
+                                </ul>
+                            </div>
+
+                            <!-- Quick Links -->
+                            <div class="menu-item">
+                                <div class="menu-title">
+                                    <div class="title-left">
+                                        <img src="assets/home/icons/link.svg" class="menu-icon" alt="">
+                                        <span>Quick Links</span>
+                                    </div>
+                                    <i class="fa-solid fa-chevron-right"></i>
+                                </div>
+                                <ul class="submenu">
+                                    <li>UTM Mail</li>
+                                    <li>Health Declaration</li>
+                                    <li>Kad Prihatin Siswa</li>
+                                    <li>PayHub</li>
+                                    <li>B40 Data Plan</li>
+                                    <li>Central UserID</li>
+                                    <li>Student Movement</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CENTER COLUMN -->
+                <div class="column-center">
+                    <div class="layout">
+                        <!-- LEFT COLUMN (Column 1) -->
+                        <div class="left-col">
+                            <!-- News Card -->
+                            <div class="card news-card">
+                                <div class="card-header">
+                                    <h3>News</h3>
+                                    <a href="#" class="more-link">more..</a>
+                                </div>
+                                <div class="news-content">
+                                    <img src="assets/home/images/news.jpg" alt="Main News" class="news-main-img">
+                                    <div class="news-details">
+                                        <span class="news-date">18 Apr 2026</span>
+                                        <p class="news-title">Jelajah Jom Masuk Universiti 2026 Zon Selatan perkasa akses pendidikan tinggi</p>
+                                        <p class="news-desc">UTM continues to lead in smart research ecosystems, aligning with the ASCEND 2030 vision...</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Events Section -->
+                            <div class="card events-card">
+                                <div class="card-header">
+                                    <h3>Events</h3>
+                                    <a href="#" class="more-link">more..</a>
+                                </div>
+                                <div class="event-list">
+                                    <div class="event-item">
+                                        <div class="event-date">
+                                            <span class="day">14</span>
+                                            <span class="month">Apr</span>
+                                        </div>
+                                        <div class="event-info">
+                                            <p>UTMPearl 2026</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Academic & Circular -->
+                            <div class="card circular-card">
+                                <div class="card-header">
+                                    <h3>Academic & Circular</h3>
+                                </div>
+                                <ul class="circular-list">
+                                    <li>Latest Academic Circular</li>
+                                    <li>Diploma Calendar</li>
+                                    <li>Bachelor Degree & PG Calendar</li>
+                                    <li>UTMSpace Calendar</li>
+                                </ul>
+                            </div>
+
+                            <!-- Form Section -->
+                            <div class="card form-section">
+                                <div class="card-header">
+                                    <h3>Form</h3>
+                                </div>
+                                <ul class="circular-list">
+                                    <li>Staff Medical Facility Form</li>
+                                    <li>University Mail Service</li>
+                                    <li>Medical Form</li>
+                                </ul>
+                            </div>
+
+                            <!-- Finance Section -->
+                            <div class="card finance-section">
+                                <div class="card-header">
+                                    <h3>Finance</h3>
+                                </div>
+                                <ul class="circular-list">
+                                    <li>Payment Methods - UTM Student</li>
+                                    <li>Enforcement of Student Financial Rules</li>
+                                    <li>Bursar Student Financial Section</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- RIGHT COLUMN (Column 2) -->
+                        <div class="right-col">
+                            <!-- Timetable box -->
+                            <div class="card timetable-card">
+                                <div class="card-header">
+                                    <h3>Timetable</h3>
+                                    <span class="subtitle">Today's schedule</span>
+                                </div>
+                                <div class="empty-placeholder">
+                                    <p>No classes scheduled for today.</p>
+                                </div>
+                            </div>
+
+                            <!-- Charity -->
+                            <div class="card charity-card">
+                                <div class="card-header">
+                                    <h3>Charity</h3>
+                                    <a href="#" class="more-link">more..</a>
+                                </div>
+                                <img src="assets/home/images/charity.jpg" alt="Charity" class="charity-img">
+                            </div>
+
+                            <!-- Eid Card -->
+                            <div class="card">
+                                <img src="assets/home/images/eid-card.jpg" alt="Eid Mubarak" style="width: 100%; border-radius: 12px;">
+                            </div>
+
+                            <!-- UTM Smart Banner -->
+                            <div class="card">
+                                <img src="assets/home/images/utm-smart.png" alt="UTM Smart" style="width: 100%; border-radius: 12px;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RIGHT COLUMN (SIDEBAR) -->
+                <div class="column-right">
+                    <!-- Area kept clean as requested -->
+                </div>
+            </div>
+        </main>
+
+        <!-- Previous Version Tag -->
+        <div class="revision">
+            <span>previous version</span>
+        </div>
+
+        <!-- Footer Support -->
+        <footer class="main-footer">
+            <p>Support</p>
+        </footer>
+
+        <!-- Rate Us Modal -->
+        <div class="modal-overlay" id="rateModal">
+            <div class="modal-content">
+                <h3>Rate Us!</h3>
+                <p>How <u>satisfied</u> are you with this site?</p>
+                <div class="rating-icons">
+                    <span class="rating-icon" onclick="closeModal()">😞</span>
+                    <span class="rating-icon" onclick="closeModal()">😐</span>
+                    <span class="rating-icon" onclick="closeModal()">😊</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Floating Buttons -->
+        <div class="floating-actions">
+            <button class="rate-btn" id="rateBtn"><i class="fa-solid fa-face-smile"></i></button>
+            <button class="scroll-top-btn" id="scrollTopBtn"><i class="fa-solid fa-chevron-up"></i></button>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/home.js"></script>
+</body> 
+</html>
